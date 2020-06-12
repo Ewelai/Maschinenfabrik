@@ -1,4 +1,6 @@
+import { SearchService } from 'src/app/core/services/search/search.service';
 import { Component, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-search-content',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchContentComponent implements OnInit {
 
-  constructor() { }
+  message: string;
+  constructor(private searchService: SearchService) { }
 
   ngOnInit(): void {
+    this.takeValue();
+  }
+
+  takeValue(): void {
+    this.searchService.value.subscribe((message: string) => this.message = message);
   }
 
 }
