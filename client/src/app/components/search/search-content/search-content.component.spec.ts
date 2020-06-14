@@ -16,10 +16,16 @@ describe('SearchContentComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchContentComponent);
     component = fixture.componentInstance;
+    component.ngOnInit();
+
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should be called with initial value', () => {
+    expect(component.value).toEqual([]);
   });
 });

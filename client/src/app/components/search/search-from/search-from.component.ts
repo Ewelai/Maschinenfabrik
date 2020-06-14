@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { SearchService } from 'src/app/core/services/search/search.service';
 
 @Component({
   selector: 'app-search-from',
@@ -8,9 +7,10 @@ import { SearchService } from 'src/app/core/services/search/search.service';
   styleUrls: ['./search-from.component.scss']
 })
 export class SearchFromComponent implements OnInit {
+  @Output() passKey: EventEmitter<string> = new EventEmitter<string>();
   searchForm: FormGroup;
 
-  constructor(private searchService: SearchService) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.initSearchForm();
@@ -24,7 +24,7 @@ export class SearchFromComponent implements OnInit {
 
   submit() {
     const key = this.searchForm.value.search;
-    this.searchService.getValue(key);
+    this.passKey.emit(key);
   }
 
 }
