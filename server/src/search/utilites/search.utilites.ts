@@ -1,35 +1,76 @@
 export const storage = new Map();
-export const queue = [];
+export const queue: Array<string[] | Object> = [];
 
-export function isObject(data: object, key: string): boolean {
+/**
+ * Checking for data type Object
+ * 
+ * @param  {Object|Array<string>} data
+ * @param  {string} key
+ * @returns boolean
+ */
+
+export function isObject(data: Object | string[], key: string): boolean {
   const target = data[key];
 
   return typeof target === 'object';
 }
 
-export function getKey(key: string) {
-  const value = storage.get(key);
 
-  return value ? value : `Key isn't available`;
-}
+/**
+ * Checking for data type Array
+ * 
+ * @param  {Object|string[]} data
+ * @param  {string} key
+ * @returns boolean
+ */
 
-export function isArray(data: object, key: string): boolean {
+export function isArray(data: Object | string[], key: string): boolean {
   const target = data[key];
 
   return Array.isArray(target);
 }
 
-export function walkArray(array: Array<any>): void {
+
+/**
+ * Getting a value by key to the storage
+ * 
+ * @param  {string} key
+ * @returns Array
+ */
+
+export function returnValue(key: string): Array<string> {
+  const value = storage.get(key);
+
+  return value ? value : `Key isn't available`;
+}
+
+
+/**
+ * Iterating through an array and pass each item to iteratingObject method
+ * 
+ * @param  {Array<Object>} array
+ * @returns void
+ */
+
+export function iteratingArray(array: Array<Object>): void {
   array.forEach(item => {
-    walkObject(item);
+    iteratingObject(item);
   });
 }
 
-export function walkTree(obj: object): void {
+
+/**
+ * Passes through the tree
+ * 
+ * @param  {Object} obj
+ * @returns void
+*/
+
+export function walkTree(obj: Object): void {
   if (Array.isArray(obj)) {
-    walkArray(obj);
+    iteratingArray(obj);
   } else if (typeof obj === 'object') {
-    walkObject(obj);
+    iteratingObject(obj);
   }
 
   while (queue.length !== 0) {
@@ -37,48 +78,59 @@ export function walkTree(obj: object): void {
   }
 }
 
-export function walkObject(obj: object): void {
-  for (const key in obj) {
-    if (isObject(obj, key)) {
-      setProperty(key, obj[key]);
-      queue.push(obj[key]);
-    } else if (isArray(obj, key)) {
-      queue.push(obj[key]);
+
+/**
+ * Iterating through an object and check type of data and set value to storage
+ * 
+ * @param  {Object} data
+ * @returns void
+ */
+
+export function iteratingObject(data: Object): void {
+  for (const key in data) {
+    if (isObject(data, key)) {
+      setProperty(key, data[key]);
+      queue.push(data[key]);
+    } else if (isArray(data, key)) {
+      queue.push(data[key]);
     } else {
-      setProperty(key, obj[key]);
+      setProperty(key, data[key]);
     }
   }
 }
 
-export function dive(queue: Array<any>): void {
+
+/**
+ * Passes through the queue and deletes already iterated items
+ * 
+ * @param  {Array<Object|string[]>} queue
+ * @returns void
+ */
+
+export function dive(queue: Array<Object | string[]>): void {
   queue.forEach((item, i) => {
     if (typeof item === 'object') {
-      walkObject(item);
+      iteratingObject(item);
       queue.splice(i, 1);
     } else {
-      walkArray(item);
+      iteratingArray(item);
       queue.splice(i, 1);
     }
   });
 }
 
-export function setProperty(key: string, value): void {
+
+/**
+ * Checks property and set it in storage
+ * 
+ * @param  {string} key
+ * @param  {string} value
+ * @returns void
+ */
+export function setProperty(key: string, value: string): void {
   if (storage.has(key)) {
     storage.get(key).push(value);
   } else {
     storage.set(key, [value]);
   }
 }
-
-//   function isPrimitive(data, key) {
-//     const target = data[key];
-
-//     switch(typeof target) {
-//       case 'string':
-//       case 'number':
-//       case 'boolean':
-//         return true;
-//       default:
-//         return false;
-//     }
-//   }

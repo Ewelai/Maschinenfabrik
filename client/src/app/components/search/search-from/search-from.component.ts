@@ -8,7 +8,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class SearchFromComponent implements OnInit {
   @Output() passKey: EventEmitter<string> = new EventEmitter<string>();
-  searchForm: FormGroup;
+  public searchForm: FormGroup;
 
   constructor() { }
 
@@ -16,13 +16,13 @@ export class SearchFromComponent implements OnInit {
     this.initSearchForm();
   }
 
-  initSearchForm(): void {
+  public initSearchForm(): void {
     this.searchForm = new FormGroup({
       search: new FormControl('', [Validators.required])
     });
   }
 
-  submit() {
+  public submit(): void {
     const key = this.searchForm.value.search;
     this.passKey.emit(key);
   }

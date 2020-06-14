@@ -5,8 +5,15 @@ import { SearchService } from './service/search/search.service';
 export class SearchController {
   constructor(private searchService: SearchService) {}
 
+  /**
+   * GET request with key query to take value
+   * 
+   * @param  {string} key
+   * @returns Array
+   */
+
   @Get()
-  findValue(@Query('key') key: string): Array<string> {
-    return this.searchService.findValue(key);
+  takeValue(@Query('key') key: string): Array<string> {
+    return this.searchService.getValueByKey(key);
   }
 }

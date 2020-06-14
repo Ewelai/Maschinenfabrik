@@ -11,7 +11,7 @@ export class SearchService {
 
   constructor(private http: HttpClient) { }
 
-  getValue(key: string): Observable<object> {
+  public getValue(key: string): Observable<object> {
     return this.http.get(`${this.url}/api/search?key=${key}`);
   }
 }

@@ -1,17 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { MockedData } from '../../mocked/MockedData';
-import { walkTree, getKey } from '../../utilites/search.utilites';
-// import { SearchData } from '../../model/search.model';
+import { walkTree, returnValue } from '../../utilites/search.utilites';
 
 @Injectable()
 export class SearchService {
-  private mockedData: object = MockedData;
+  private mockedData = MockedData;
 
-  onModuleInit() {
+  onModuleInit(): void {
     walkTree(this.mockedData);
   }
 
-  public findValue(searchKey: string): Array<string> {
-    return getKey(searchKey);
+  /**
+   * Find a value by key
+   * 
+   * @param  {string} key
+   * @returns Array
+   */
+
+  public getValueByKey(key: string): Array<string> {
+    return returnValue(key);
   }
 }

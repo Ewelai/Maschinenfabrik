@@ -7,15 +7,15 @@ import { SearchService } from 'src/app/core/services/search/search.service';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-  value: Array<string>;
+  public value: Array<string>;
 
   constructor(private searchService: SearchService) { }
 
   ngOnInit(): void {
   }
 
-  onGetValue(key: string): void {
-    this.searchService.getValue(key).subscribe((value: Array<any>) => {
+  public onGetValue(key: string): void {
+    this.searchService.getValue(key).subscribe((value: Array<string>) => {
       this.value = value;
     }, (err) => {
       this.value = err.error.text;
