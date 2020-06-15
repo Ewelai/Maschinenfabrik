@@ -1,34 +1,5 @@
-export const storage = new Map();
-export const queue: Array<string[] | Object> = [];
-
-/**
- * Checking for data type Object
- * 
- * @param  {Object|Array<string>} data
- * @param  {string} key
- * @returns boolean
- */
-
-export function isObject(data: Object | string[], key: string): boolean {
-  const target = data[key];
-
-  return typeof target === 'object';
-}
-
-
-/**
- * Checking for data type Array
- * 
- * @param  {Object|string[]} data
- * @param  {string} key
- * @returns boolean
- */
-
-export function isArray(data: Object | string[], key: string): boolean {
-  const target = data[key];
-
-  return Array.isArray(target);
-}
+const storage = new Map();
+const queue: Array<string[] | Object> = [];
 
 
 /**
@@ -38,24 +9,10 @@ export function isArray(data: Object | string[], key: string): boolean {
  * @returns Array
  */
 
-export function returnValue(key: string): Array<string> {
+export function getValueFromStorage(key: string): Array<string> {
   const value = storage.get(key);
 
   return value ? value : `Key isn't available`;
-}
-
-
-/**
- * Iterating through an array and pass each item to iteratingObject method
- * 
- * @param  {Array<Object>} array
- * @returns void
- */
-
-export function iteratingArray(array: Array<Object>): void {
-  array.forEach(item => {
-    iteratingObject(item);
-  });
 }
 
 
@@ -80,34 +37,13 @@ export function walkTree(obj: Object): void {
 
 
 /**
- * Iterating through an object and check type of data and set value to storage
- * 
- * @param  {Object} data
- * @returns void
- */
-
-export function iteratingObject(data: Object): void {
-  for (const key in data) {
-    if (isObject(data, key)) {
-      setProperty(key, data[key]);
-      queue.push(data[key]);
-    } else if (isArray(data, key)) {
-      queue.push(data[key]);
-    } else {
-      setProperty(key, data[key]);
-    }
-  }
-}
-
-
-/**
  * Passes through the queue and deletes already iterated items
  * 
  * @param  {Array<Object|string[]>} queue
  * @returns void
  */
 
-export function dive(queue: Array<Object | string[]>): void {
+function dive(queue: Array<Object | string[]>): void {
   queue.forEach((item, i) => {
     if (typeof item === 'object') {
       iteratingObject(item);
@@ -121,13 +57,46 @@ export function dive(queue: Array<Object | string[]>): void {
 
 
 /**
+ * Iterating through an array and pass each item to iteratingObject method
+ * 
+ * @param  {Array<Object>} array
+ * @returns void
+ */
+
+function iteratingArray(array: Array<Object>): void {
+  array.forEach(item => iteratingObject(item));
+}
+
+
+/**
+ * Iterating through an object and check type of data and set value to storage
+ * 
+ * @param  {Object} data
+ * @returns void
+ */
+
+function iteratingObject(data: Object): void {
+  for (const key in data) {
+    if (typeof data[key] === 'object') {
+      setProperty(key, data[key]);
+      queue.push(data[key]);
+    } else if (Array.isArray(data[key])) {
+      queue.push(data[key]);
+    } else {
+      setProperty(key, data[key]);
+    }
+  }
+}
+
+
+/**
  * Checks property and set it in storage
  * 
  * @param  {string} key
  * @param  {string} value
  * @returns void
  */
-export function setProperty(key: string, value: string): void {
+function setProperty(key: string, value: string): void {
   if (storage.has(key)) {
     storage.get(key).push(value);
   } else {

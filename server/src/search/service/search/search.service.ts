@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MockedData } from '../../mocked/MockedData';
-import { walkTree, returnValue } from '../../utilites/search.utilites';
+import { walkTree, getValueFromStorage } from '../../utilites/search.utilites';
 
 @Injectable()
 export class SearchService {
@@ -18,6 +18,6 @@ export class SearchService {
    */
 
   public getValueByKey(key: string): Array<string> {
-    return returnValue(key);
+    return getValueFromStorage(key);
   }
 }

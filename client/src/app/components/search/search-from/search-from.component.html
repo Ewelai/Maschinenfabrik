@@ -13,6 +13,7 @@
 
     <button
       (click)="submit()"
+      [disabled]="searchForm.invalid || isDisabled"
       type="submit"
       class="search-form__btn"
     > Search</button>

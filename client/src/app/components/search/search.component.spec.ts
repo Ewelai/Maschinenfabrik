@@ -1,24 +1,25 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { of } from 'rxjs';
 
 import { CoreModule } from './../../core/core.module';
+import { MockSpy } from './../../core/interfaces/mock-spy';
 import { SearchComponent } from './search.component';
 import { SearchService } from 'src/app/core/services/search/search.service';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MockDataResponse } from './search.config.spec';
-import { BrowserModule } from '@angular/platform-browser';
+import { SearchServiceTest, dataFromJson, err } from './search.config.spec';
+
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
-  let searchService: SearchService;
+  let searchService: MockSpy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ HttpClientModule, CoreModule, BrowserModule ],
-      providers: [{provide: SearchService, useValue: MockDataResponse}],
-      declarations: [ SearchComponent ],
-      schemas: [NO_ERRORS_SCHEMA]
+      providers: [SearchServiceTest],
+      declarations: [ SearchComponent ]
     })
     .compileComponents();
   }));
@@ -26,9 +27,7 @@ describe('SearchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
-    searchService = TestBed.inject(SearchService);
-
-    fixture.detectChanges();
+    searchService = TestBed.inject(SearchService) as unknown as MockSpy;
   });
 
   it('should create', () => {
@@ -36,27 +35,18 @@ describe('SearchComponent', () => {
   });
 
   it('should return data from service', () => {
-    spyOn(searchService, 'getValue').and.callThrough();
+    searchService.getValue.and.returnValue(of(dataFromJson));
     component.onGetValue('servlet-name');
-
-    // tslint:disable-next-line: no-console
-    console.debug('sfefe', searchService);
-
-    component.onGetValue('servlet-name');
-    fixture.detectChanges();
 
     expect(searchService.getValue).toHaveBeenCalledWith('servlet-name');
-    expect(component.value).toEqual([ 'cofaxEmail', 'cofaxAdmin', 'cofaxTools', 'cofaxCDS', 'fileServlet' ]);
+    expect(component.value).toEqual(dataFromJson);
   });
 
-  // it('should create mockSearchFormComponent', () => {
-  //   expect(mockSearchFormComponent).toBeTruthy();
-  // });
+  it('should return error', () => {
+    searchService.getValue.and.returnValue(of(err.error.text));
+    component.onGetValue('error');
 
-  // it('should input key', () => {
-  //   mockSearchFormComponent.searchForm.value.search = 'servlet';
-  //   fixture.detectChanges();
-
-  //   expect(mockSearchFormComponent.searchForm.value.search).toBe('servlet');
-  // });
+    expect(searchService.getValue).toHaveBeenCalledWith('error');
+    expect(component.value).toEqual(err.error.text);
+  });
 });

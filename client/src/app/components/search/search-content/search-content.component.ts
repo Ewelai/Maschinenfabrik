@@ -5,12 +5,7 @@ import { Component, OnInit, Input } from '@angular/core';
   templateUrl: './search-content.component.html',
   styleUrls: ['./search-content.component.scss'],
 })
-export class SearchContentComponent implements OnInit {
+export class SearchContentComponent {
   @Input() value = [];
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

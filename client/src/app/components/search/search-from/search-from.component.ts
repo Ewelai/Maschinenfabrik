@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -7,23 +7,22 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./search-from.component.scss']
 })
 export class SearchFromComponent implements OnInit {
-  @Output() passKey: EventEmitter<string> = new EventEmitter<string>();
+  @Input() public isDisabled: boolean;
+  @Output() public passKey: EventEmitter<string> = new EventEmitter<string>();
   public searchForm: FormGroup;
 
-  constructor() { }
-
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.initSearchForm();
   }
 
-  public initSearchForm(): void {
+  private initSearchForm(): void {
     this.searchForm = new FormGroup({
       search: new FormControl('', [Validators.required])
     });
   }
 
   public submit(): void {
-    const key = this.searchForm.value.search;
+    const key = this.searchForm.get('search').value;
     this.passKey.emit(key);
   }
 

@@ -20,7 +20,6 @@ describe('SearchFromComponent', () => {
     component = fixture.componentInstance;
 
     component.ngOnInit();
-    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -29,11 +28,9 @@ describe('SearchFromComponent', () => {
 
   it('field serach validity', () => {
     const search = component.searchForm.controls.search;
-    expect(search.valid).toBeFalsy();
 
-    let errors = {};
-    errors = search.errors;
-    expect(errors['required']).toBeTruthy();
+    expect(search.valid).toBeFalsy();
+    expect(search.errors.required).toBeTruthy();
   });
 
   it('set value to field search', () => {
@@ -41,7 +38,6 @@ describe('SearchFromComponent', () => {
 
     search.setValue('web-app');
     expect(search.valid).toBeTruthy();
-    expect(search.value).toEqual('web-app');
   });
 
   it('call submit method', () => {
@@ -59,9 +55,7 @@ describe('SearchFromComponent', () => {
 
     component.submit();
 
-    expect(component.passKey.emit).toHaveBeenCalled();
     expect(component.passKey.emit).toHaveBeenCalledWith('web-app');
   });
-
 
 });
