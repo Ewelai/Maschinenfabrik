@@ -62,7 +62,7 @@ describe('SearchFromComponent', () => {
     expect(component.passKey.emit).toHaveBeenCalledWith('web-app');
   });
 
-  it('should init search form', () => {
+  it('should init search form method', () => {
     expect(component.searchForm).toBeFalsy();
     fixture.detectChanges();
     spyOn(component, 'initSearchForm').and.callThrough();
