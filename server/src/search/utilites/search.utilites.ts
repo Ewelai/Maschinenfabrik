@@ -8,7 +8,6 @@ const queue: Array<string[] | Object> = [];
  * @param  {string} key
  * @returns Array
  */
-
 export function getValueFromStorage(key: string): Array<string> {
   const value = storage.get(key);
 
@@ -22,7 +21,6 @@ export function getValueFromStorage(key: string): Array<string> {
  * @param  {Object} obj
  * @returns void
 */
-
 export function walkTree(obj: Object): void {
   if (Array.isArray(obj)) {
     iteratingArray(obj);
@@ -42,16 +40,14 @@ export function walkTree(obj: Object): void {
  * @param  {Array<Object|string[]>} queue
  * @returns void
  */
-
 function dive(queue: Array<Object | string[]>): void {
   queue.forEach((item, i) => {
     if (typeof item === 'object') {
       iteratingObject(item);
-      queue.splice(i, 1);
     } else {
       iteratingArray(item);
-      queue.splice(i, 1);
     }
+    queue.splice(i, 1);
   });
 }
 
@@ -62,7 +58,6 @@ function dive(queue: Array<Object | string[]>): void {
  * @param  {Array<Object>} array
  * @returns void
  */
-
 function iteratingArray(array: Array<Object>): void {
   array.forEach(item => iteratingObject(item));
 }
@@ -74,16 +69,15 @@ function iteratingArray(array: Array<Object>): void {
  * @param  {Object} data
  * @returns void
  */
-
 function iteratingObject(data: Object): void {
-  for (const key in data) {
-    if (typeof data[key] === 'object') {
-      setProperty(key, data[key]);
-      queue.push(data[key]);
-    } else if (Array.isArray(data[key])) {
-      queue.push(data[key]);
+  for (const [key, value] of Object.entries(data)) {
+    if (typeof value === 'object') {
+      setProperty(key, value);
+      queue.push(value);
+    } else if (Array.isArray(value)) {
+      queue.push(value);
     } else {
-      setProperty(key, data[key]);
+      setProperty(key, value);
     }
   }
 }
@@ -93,10 +87,10 @@ function iteratingObject(data: Object): void {
  * Checks property and set it in storage
  * 
  * @param  {string} key
- * @param  {string} value
+ * @param  {unknown} value
  * @returns void
  */
-function setProperty(key: string, value: string): void {
+function setProperty(key: string, value: unknown): void {
   if (storage.has(key)) {
     storage.get(key).push(value);
   } else {
