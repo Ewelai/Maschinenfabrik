@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { of } from 'rxjs';
 
 import { CoreModule } from './../../core/core.module';
-import { MockSpy } from './../../core/interfaces/mock-spy';
+import { SpyByMethods } from '../../core/interfaces/spy-by-methods';
 import { SearchComponent } from './search.component';
 import { SearchService } from 'src/app/core/services/search/search.service';
 import { SearchServiceTest, dataFromJson, err } from './search.config.spec';
@@ -13,7 +13,7 @@ import { SearchServiceTest, dataFromJson, err } from './search.config.spec';
 describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
-  let searchService: MockSpy;
+  let searchService: SpyByMethods;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -27,7 +27,7 @@ describe('SearchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
-    searchService = TestBed.inject(SearchService) as unknown as MockSpy;
+    searchService = TestBed.inject(SearchService) as unknown as SpyByMethods;
   });
 
   it('should create', () => {

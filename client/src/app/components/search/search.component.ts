@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SearchService } from 'src/app/core/services/search/search.service';
 
 @Component({
@@ -17,7 +17,10 @@ export class SearchComponent {
     this.searchService.getValue(key).subscribe((value: Array<string>) => {
       this.isDisabled = false;
       this.value = value;
-    }, error => this.value = error );
+    }, error => {
+      this.value = error;
+      this.isDisabled = false;
+    } );
   }
 
 }

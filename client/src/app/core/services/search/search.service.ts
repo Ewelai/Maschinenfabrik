@@ -2,13 +2,13 @@ import { environment } from './../../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
-  private url = environment.mockURL;
+  private url = environment.URL;
 
   constructor(private http: HttpClient) { }
 

@@ -1,5 +1,5 @@
 import { SearchService } from 'src/app/core/services/search/search.service';
-import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export const dataFromJson = [ 'cofaxEmail', 'cofaxAdmin', 'cofaxTools', 'cofaxCDS', 'fileServlet' ];
 export const MockDataResponse = {

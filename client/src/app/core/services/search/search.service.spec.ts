@@ -1,16 +1,15 @@
-import { ServiceMethods } from './../../interfaces/service-methods';
-import { environment } from './../../../../environments/environment.prod';
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { environment } from './../../../../environments/environment.prod';
 
 import { SearchService } from './search.service';
+import { HandleErrorMethod } from '../../interfaces/handle-error-method';
 import { MockDataForService, err } from '../../../components/search/search.config.spec';
-import { of, Observable } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+import { of } from 'rxjs';
 
 describe('SearchService', () => {
   let injector: TestBed;
-  let service: ServiceMethods;
+  let service: HandleErrorMethod;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('SearchService', () => {
     });
 
     injector = getTestBed();
-    service = TestBed.inject(SearchService) as unknown as ServiceMethods;
+    service = TestBed.inject(SearchService) as unknown as HandleErrorMethod;
     httpMock = injector.inject(HttpTestingController);
   });
 
@@ -32,7 +31,7 @@ describe('SearchService', () => {
   });
 
   it('getValue() should return value', () => {
-    const url = `${environment.mockURL}/api/search?key=servlet-name`;
+    const url = `${environment.URL}/api/search?key=servlet-name`;
 
     service.getValue('servlet-name').subscribe(res => {
       expect(res).toEqual(MockDataForService);
@@ -41,6 +40,18 @@ describe('SearchService', () => {
     const req = httpMock.expectOne(url);
     expect(req.request.method).toBe('GET');
     req.flush(MockDataForService);
+  });
+
+  it('handle error in getValue() method', () => {
+    const url = `${environment.URL}/api/search?key=error`;
+
+    service.getValue('error').subscribe(res => {
+      expect(res).toEqual(err);
+    });
+
+    const req = httpMock.expectOne(url);
+    expect(req.request.method).toBe('GET');
+    req.flush(err);
   });
 
   it('handleError() method should return object with error', () => {
