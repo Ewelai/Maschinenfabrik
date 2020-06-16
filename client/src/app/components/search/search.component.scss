@@ -1,17 +1,6 @@
 .search {
   display: flex;
   flex-direction: column;
-  align-self: center;
   height: 100%;
-  border: 1px solid red;
-
-  .search-form {
-    padding-bottom: 5%;
-    border: 1px solid green;
-  }
-
-  .search-content {
-    padding-bottom: 5%;
-    border: 1px solid green;
-  }
+  padding-top: 5%;
 }

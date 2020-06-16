@@ -1,8 +1,4 @@
 <div class="search">
-  <div class="search-form">
-    <app-search-from></app-search-from>
-  </div>
-  <div class="search-content">
-    <app-search-content></app-search-content>
-  </div>
+  <app-search-from (passKey)="onGetValue($event)" [isDisabled]="isDisabled"></app-search-from>
+  <app-search-content [value]="value"></app-search-content>
 </div>

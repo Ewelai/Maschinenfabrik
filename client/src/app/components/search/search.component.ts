@@ -1,15 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { SearchService } from 'src/app/core/services/search/search.service';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent {
+  public value: Array<string>;
+  public isDisabled: boolean;
 
-  constructor() { }
+  constructor(private searchService: SearchService) { }
 
-  ngOnInit(): void {
+  public onGetValue(key: string): void {
+    this.isDisabled = true;
+    this.searchService.getValue(key).subscribe((value: Array<string>) => {
+      this.isDisabled = false;
+      this.value = value;
+    }, error => {
+      this.value = error;
+      this.isDisabled = false;
+    } );
   }
 
 }

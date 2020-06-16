@@ -1,1 +1,21 @@
-<p>search-from works!</p>
+<div class="search-form-section">
+  <form [formGroup]="searchForm" class="search-form">
+    <div class="search-form__content">
+      <input
+        class="search-form__input"
+        id="search"
+        placeholder="Search..."
+        type="text"
+        formControlName="search"
+      >
+      <label for="search" class="search-form__label">Search something</label>
+    </div>
+
+    <button
+      (click)="submit()"
+      [disabled]="searchForm.invalid || isDisabled"
+      type="submit"
+      class="search-form__btn"
+    > Search</button>
+  </form>
+</div>
